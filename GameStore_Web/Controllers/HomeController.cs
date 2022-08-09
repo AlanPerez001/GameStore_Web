@@ -119,33 +119,50 @@ namespace GameStore_Web.Controllers
         [HttpGet]
         public async Task<ActionResult> EditarRegistro(int idJuego)
         {
-
             var modelo = new MVReporte();
             modelo.Detalles = new MVDetalleJuego();
             try
             {
-                if (!string.IsNullOrEmpty(idJuego.ToString()))
+                ClienteWebApi clienteWebApi = new ClienteWebApi();
+                if (idJuego > 0)
                 {
-                    ClienteWebApi clienteWebApi = new ClienteWebApi();
-
-                    var idReporte = 0;
-
-                    var respuestaWebApiObjeto = await clienteWebApi.callWebApiAutorizacionGetObjeto($"Catalogo/ObtenerDetalleJuego/{idJuego}");
-                    if (respuestaWebApiObjeto != null && respuestaWebApiObjeto.statusCode == 200)
+                    if (!string.IsNullOrEmpty(idJuego.ToString()))
                     {
-                        modelo.Detalles = respuestaWebApiObjeto.respuesta.Datos.ToObject<MVDetalleJuego>();
-                        modelo.Detalles.idJuego = idJuego;
-                        ViewBag.Titulo = modelo.Detalles.Titulo;
-                        ViewBag.Descripcion = modelo.Detalles.Descripcion;
-                        ViewBag.AnioPublicacion = modelo.Detalles.AnioPublicacion;
-                        ViewBag.Consolas = modelo.Detalles.Consolas;
-                        ViewBag.Genero = modelo.Detalles.Genero;
-                        ViewBag.Calificacion = modelo.Detalles.Calificacion;
+
+                        var idReporte = 0;
+
+                        var respuestaWebApiObjeto = await clienteWebApi.callWebApiAutorizacionGetObjeto($"Catalogo/ObtenerDetalleJuego/{idJuego}");
+                        if (respuestaWebApiObjeto != null && respuestaWebApiObjeto.statusCode == 200)
+                        {
+                            modelo.Detalles = respuestaWebApiObjeto.respuesta.Datos.ToObject<MVDetalleJuego>();
+                            modelo.Detalles.idJuego = idJuego;
+                            ViewBag.Titulo = modelo.Detalles.Titulo;
+                            ViewBag.Descripcion = modelo.Detalles.Descripcion;
+                            ViewBag.AnioPublicacion = modelo.Detalles.AnioPublicacion;
+                            ViewBag.Consolas = modelo.Detalles.Consolas;
+                            ViewBag.Genero = modelo.Detalles.Genero;
+                            ViewBag.Calificacion = modelo.Detalles.Calificacion;
+                        }
                     }
+
                 }
-
-
-
+                else
+                {
+                    var filtroGenero = new List<DropGeneral>();
+                    var filtroConsola = new List<DropGeneral>();
+                    var respuestaWebApiLista = await clienteWebApi.callWebApiAutorizacionGetLista($"Catalogo/ObtenerFiltros/{1}");
+                    if (respuestaWebApiLista != null && respuestaWebApiLista.statusCode == 200)
+                    {
+                        filtroGenero = respuestaWebApiLista.respuesta.Datos.ToObject<List<DropGeneral>>();
+                    }
+                    var respuestaWebApiLista2 = await clienteWebApi.callWebApiAutorizacionGetLista($"Catalogo/ObtenerFiltros/{2}");
+                    if (respuestaWebApiLista2 != null && respuestaWebApiLista2.statusCode == 200)
+                    {
+                        filtroConsola = respuestaWebApiLista2.respuesta.Datos.ToObject<List<DropGeneral>>();
+                    }
+                    ViewBag.filtroGenero = filtroGenero;
+                    ViewBag.filtroConsola = filtroConsola;
+                }
             }
             catch (Exception ex)
             {
@@ -201,10 +218,17 @@ namespace GameStore_Web.Controllers
             try
             {
 
-                var datos = model.Detalles;
+                PeticionGuardarRegistro peticion = new PeticionGuardarRegistro();
+                peticion.IdJuego = model.Detalles.idJuego;
+                peticion.Titulo = model.Detalles.Titulo;
+                peticion.Descripcion = model.Detalles.Descripcion;
+                peticion.AnioPublicacion = model.Detalles.AnioPublicacion;
+                peticion.Calificacion = model.Detalles.Calificacion;
+                peticion.idConsola = model.Detalles.idConsola;
+                peticion.idGenero = model.Detalles.idGenero;
                 ClienteWebApi clienteWebApi = new ClienteWebApi();
 
-                var respuestaWebApi = await clienteWebApi.callWebApiAutorizacionPostObjeto($"Catalogo/GuardaRegistro", JsonConvert.SerializeObject(datos));
+                var respuestaWebApi = await clienteWebApi.callWebApiAutorizacionPostObjeto($"Catalogo/GuardaRegistro", JsonConvert.SerializeObject(peticion));
                 if (respuestaWebApi != null && respuestaWebApi.statusCode == 200)
                 {
                     TempData["idRespuesta"] = respuestaWebApi.respuesta.idResponse;
@@ -212,7 +236,7 @@ namespace GameStore_Web.Controllers
 
                     if (respuestaWebApi.respuesta.idResponse > 0)
                     {
-                        return RedirectToAction("EditarRegistro", new { idJuego = model.Detalles.idJuego });
+                        return RedirectToAction("EditarRegistro", new { idJuego = respuestaWebApi.respuesta.idResponse });
                     }
                     else
                     {

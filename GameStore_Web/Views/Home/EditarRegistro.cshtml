@@ -30,8 +30,6 @@
                             <div class="col-sm-9">
                                 <label for="nombre">Descripcion:</label>
                                 <p>@Html.TextAreaFor(model => model.Detalles.Descripcion, new { @class = "inpt-ex letrasNumeros descripcion", })</p>
-                                @*@Html.TextBoxFor(model => model.Detalles.Descripcion, new { @class = "inpt-ex letrasNumeros", disabled = "disabled" })*@
-                                @*@Html.ValidationMessageFor(model => model.Detalles.Descripcion, "", new { @class = "text-danger" })*@
                             </div>
                             <div class="col-sm-9">
                                 <label for="nombre">Año de publicacion:</label>
@@ -39,65 +37,42 @@
                                 <label for="nombre">Calificacion:</label>
                                 <p>@Html.TextAreaFor(model => model.Detalles.Calificacion, new { @class = "inpt-ex Numeros Titulo", })</p>
                             </div>
-                            <div class="col-sm-9">
-                                <label for="nombre">Consolas:</label>
-                                <p>
-                                    @Html.TextBoxFor(model => model.Detalles.Consolas, new { @class = "inpt-ex letrasNumeros Titulo", disabled = "disabled" })
-                                </p>
-                                <label for="nombre">Genero:</label>
-                                <p>
-                                    @Html.TextBoxFor(model => model.Detalles.Genero, new { @class = "inpt-ex letrasNumeros Titulo", disabled = "disabled" })
-                                </p>
-                            </div>
+                            @if (!string.IsNullOrEmpty(ViewBag.Titulo))
+                            {
+                                <div class="col-sm-9">
+                                    <label for="nombre">Consolas:</label>
+                                    <p>
+                                        @Html.TextBoxFor(model => model.Detalles.Consolas, new { @class = "inpt-ex letrasNumeros Titulo", disabled = "disabled" })
+                                    </p>
+                                    <label for="nombre">Genero:</label>
+                                    <p>
+                                        @Html.TextBoxFor(model => model.Detalles.Genero, new { @class = "inpt-ex letrasNumeros Titulo", disabled = "disabled" })
+                                    </p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-9">
+                                    <p>
+                                        <label for="pais">Consolas:</label>
+                                        @Html.DropDownListFor(model => model.Detalles.idConsola, new SelectList(ViewBag.filtroConsola, "Id", "Descripcion"), "Todos", new { @class = "select-ex" })
+                                        @Html.ValidationMessageFor(model => model.Detalles.Consolas, "", new { @class = "text-danger" })
+                                    </p>
+                                    <p>
+                                        <label for="pais">Genero:</label>
+                                        @Html.DropDownListFor(model => model.Detalles.idGenero, new SelectList(ViewBag.filtroGenero, "Id", "Descripcion"), "Todos", new { @class = "select-ex" })
+                                        @Html.ValidationMessageFor(model => model.Detalles.Genero, "", new { @class = "text-danger" })
+                                    </p>
+                                </div>
+
+
+                            }
+
 
 
                             <div class="col-xs-12 col-sm-6 mt-10">
                                 <button type="submit" class="btn-perf" id="btnCambiarEstatus">Guardar</button>
                             </div>
-                            @*<div class="col-sm-3">
-                                    <label for="entidad">Estatus:</label>
-                                    @Html.DropDownListFor(model => model.Detalles.Descripcion, new SelectList(ViewBag.FiltroEstatus, "Id", "Descripcion"), "Selecciona", new { @class = "select-ex" })
-                                    @Html.ValidationMessageFor(model => model.Detalles.Descripcion, "", new { @class = "text-danger" })
-                                </div>*@
-                            @*<div class="col-sm-4 text-center mt-20">
-                                    <div class="img-report"><img class="imgUsuarioHeaderC" src="@ViewBag.ImagenUsuario" onerror="this.src='/Imagenes/Miperfil/FotoPerfil-01.png';"></div>
-                                    <div class="text-img text-left">
-
-                                        <p class="re-f1">@ViewBag.UsuarioReporto</p>
-                                        <p class="re-f2">Dueño</p>
-                                        <p class="re-f2">@ViewBag.NombreCondominio</p>
-                                    </div>
-                                    <p class="re-f3">@ViewBag.FechayHora</p>
-                                </div>
-                                <div class="col-sm-12">
-                                    <label for="pais">Detalles:</label>
-                                    @Html.TextAreaFor(model => model.Detalles.AnioPublicacion, new { @class = "inpt-ex letrasNumeros", disabled = "disabled" })
-                                </div>
-                                <div class="col-sm-12">
-                                    <label for="pais" class="pad-15">Evidencias:</label>
-                                    <div class="row row-cols-5">
-                                        @if (!string.IsNullOrEmpty(ViewBag.Imagen1))
-                                        {
-                                            <div class="col-sm col-6"><img src="@ViewBag.Imagen1" onerror="this.src='/Imagenes/Comunicacion/imagen-01.png';"></div>
-                                        }
-                                        @if (!string.IsNullOrEmpty(ViewBag.Imagen2))
-                                        {
-                                            <div class="col-sm col-6"><img src="@ViewBag.Imagen2" onerror="this.src='/Imagenes/Comunicacion/imagen-01.png';"></div>
-                                        }
-                                        @if (!string.IsNullOrEmpty(ViewBag.Imagen3))
-                                        {
-                                            <div class="col-sm col-6"><img src="@ViewBag.Imagen3" onerror="this.src='/Imagenes/Comunicacion/imagen-01.png';"></div>
-                                        }
-                                        @if (!string.IsNullOrEmpty(ViewBag.Imagen4))
-                                        {
-                                            <div class="col-sm col-6"><img src="@ViewBag.Imagen4" onerror="this.src='/Imagenes/Comunicacion/imagen-01.png';"></div>
-                                        }
-                                        @if (!string.IsNullOrEmpty(ViewBag.Imagen5))
-                                        {
-                                            <div class="col-sm col-6"><img src="@ViewBag.Imagen5" onerror="this.src='/Imagenes/Comunicacion/imagen-01.png';"></div>
-                                        }
-                                    </div>
-                                </div>*@
 
                         </div>
                     }

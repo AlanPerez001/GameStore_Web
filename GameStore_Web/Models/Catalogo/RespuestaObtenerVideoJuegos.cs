@@ -39,7 +39,9 @@ namespace GameStore_Web.Models.Catalogo
         public string AnioPublicacion { get; set; }
         public int Calificacion { get; set; }
         public string Consolas { get; set; }
+        public int idConsola { get; set; }
         public string Genero { get; set; }
+        public int idGenero { get; set; }
     }
     public class MVFiltroGenero
     {

@@ -20,8 +20,6 @@
                     @using (Html.BeginForm("JuegosFiltro", "Home", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
-                        @*@Html.HiddenFor(m => m.FiltroGenero.Descripcion);
-                        @Html.HiddenFor(m => m.FiltroConsola.Descripcion);*@
                         <div class="row">
                             <div class="col-sm-3">
                                 <label for="pais">Generos:</label>
@@ -37,6 +35,11 @@
                             </div>
                         </div>
                     }
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <a href="@Url.Action("EditarRegistro","Home",new { idJuego =  0})" class="btn-ex fix-btn fix-btn-pro">Agregar</a>
+                        </div>
+                    </div>
                     @using (Html.BeginForm("EliminaJuego", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "formEliminar", style = "display:none;" }))
                     {
                         @Html.AntiForgeryToken()
@@ -54,38 +57,38 @@
                                     <th>Consolas</th>
                                 </tr>
                             </thead>
-                            <tbody >
+                            <tbody>
                                 @if (ViewBag.VideoJuegos != null)
                                 {
                                     var hayDato = false;
                                     foreach (var item in ViewBag.VideoJuegos)
                                     {
-                                <tr>
-                                    <td>
-                                        <span>@item.Titulo</span>
-                                    </td>
-                                    <td>
-                                        <span >@item.Descripcion</span>
-                                    </td>
-                                    <td>
-                                        <span>@item.AnioPublicacion</span>
-                                    </td>
-                                    <td>
-                                        <span>@item.Calificacion</span>
-                                    </td>
-                                    <td>
-                                        <span>@item.Genero</span>
-                                    </td>
-                                    <td>
-                                        <span>@item.Consolas</span>
-                                    </td>
+                                        <tr>
+                                            <td>
+                                                <span>@item.Titulo</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Descripcion</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.AnioPublicacion</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Calificacion</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Genero</span>
+                                            </td>
+                                            <td>
+                                                <span>@item.Consolas</span>
+                                            </td>
 
 
-                                    <td class="text-center">
-                                        <a href="@Url.Action("EditarRegistro","Home",new { idJuego =  item.idJuego})"><img class="img-delete" src="~/img/Editar.png" alt="ver"></a>
-                                        <a href="#" id="@string.Format("btnEliminar{0}", item.idJuego)" onclick="eliminaJuego(this.id);"><img class="img-delete" src="~/img/IconoEliminar.png" alt="eliminar"></a>
-                                    </td>
-                                </tr>
+                                            <td class="text-center">
+                                                <a href="@Url.Action("EditarRegistro","Home",new { idJuego =  item.idJuego})"><img class="img-delete" src="~/img/Editar.png" alt="ver"></a>
+                                                <a href="#" id="@string.Format("btnEliminar{0}", item.idJuego)" onclick="eliminaJuego(this.id);"><img class="img-delete" src="~/img/IconoEliminar.png" alt="eliminar"></a>
+                                            </td>
+                                        </tr>
 
 
                                         hayDato = true;

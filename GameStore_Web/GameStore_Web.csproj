@@ -126,6 +126,7 @@
     </Compile>
     <Compile Include="Models\Catalogo\DropGeneral.cs" />
     <Compile Include="Models\Catalogo\PeticionEliminar.cs" />
+    <Compile Include="Models\Catalogo\PeticionGuardarRegistro.cs" />
     <Compile Include="Models\Catalogo\RespuestaObtenerVideoJuegos.cs" />
     <Compile Include="Models\MVLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
